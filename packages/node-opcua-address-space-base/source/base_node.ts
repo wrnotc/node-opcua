@@ -41,6 +41,7 @@ import { UAReferenceType } from "./ua_reference_type";
 import { UAVariable } from "./ua_variable";
 import { UAVariableT } from "./ua_variable_t";
 import { UAReference } from "./ua_reference";
+import { UAProperty } from "./ua_property";
 
 export declare interface AddReferenceOpts {
     referenceType: keyof ReferenceTypeIds | NodeIdLike | UAReferenceType;
@@ -206,8 +207,15 @@ export declare class BaseNode extends EventEmitter {
 
     public allReferences(): UAReference[];
 
+    /**
+     * Get the Child by name, if browseName is string and namespaceIndex undefined
+     * then the search doesn't care about namespace matching
+     * 
+     * @param browseName 
+     */
     public getChildByName(browseName: QualifiedNameOptions): BaseNode | null;
     public getChildByName(browseName: string, namespaceIndex?: number): BaseNode | null;
+
 
     /**
      * this methods propagates the forward references to the pointed node
@@ -254,7 +262,13 @@ export declare class BaseNode extends EventEmitter {
      * Clients may read the NodeVersion Property or subscribe to it to determine when the 
      * structure of a Node has changed.
      */
-    nodeVersion?: UAVariableT<UAString, DataType.String>;
+    // nodeVersion?: UAProperty<UAString, DataType.String>;
+     /**
+     * return the versioning node
+     */
+    getNodeVersion(): UAProperty<UAString, DataType.String> | null;
+
+
 
     /**
      *
